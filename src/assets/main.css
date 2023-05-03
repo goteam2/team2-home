@@ -1,0 +1,75 @@
+:root{
+    --header-wrap-height: 152px;
+    --full-header-height: 360px;
+}
+html,body{
+    scroll-behavior: smooth;
+
+}
+
+body{
+    background: black;
+}
+#app{
+  width: 100vw;
+  max-width: 1280px;
+  min-height: 60vh;
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  /* justify-content: center; */
+  /* padding: 20px; */
+  align-items: flex-start;
+  margin: 0 auto;
+  position: relative;
+}
+
+.sticky-block{
+    height: var(--header-wrap-height);
+}
+
+.header-wrap{
+    height: var(--header-wrap-height);
+}
+
+.subheader-wrap{
+    top: var(--header-wrap-height);
+}
+
+#mtn-vector, #mtn-image{
+    margin-top: calc(var(--full-header-height) + 0px);
+    align-self: start;
+    position: sticky;
+    top: 60px;
+}
+
+#mtn-image{
+    /* mix-blend-mode:difference; */
+    position: sticky;
+    top: 60px;
+
+}
+#mtn-image img{
+    width: 100%;
+    height: auto;
+    
+}
+
+#mtn-image svg{
+    position: absolute;
+    margin-top:140px;
+    right:0;
+    padding-left:2.3rem;
+    opacity: 0;
+    /* transition: 2s opacity ease-in, .3s stroke-color ease-in; */
+    max-width: 87.5vw;
+}
+
+@media (min-width: 1440px){
+    #mtn-image svg{
+        /* top: 140px; */
+    }
+}
+
+#reveal-slogan{
+    position: absolute;
+}

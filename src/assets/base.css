@@ -1,0 +1,19 @@
+@import url("https://use.typekit.net/but8qqp.css");
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+
+
+.font-nimbus{
+    font-family: 'nimbus-sans-extended';
+}
+
+font-neue{
+    font-family: 'neue-haas-grotesk-text';
+}
+
+body{
+    font-family: 'neue-haas-grotesk-text';
+}
