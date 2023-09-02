@@ -1,15 +1,13 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx,vue}",
-  ],  theme: {
+  darkMode: "class",
+  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx,vue}"],
+  theme: {
     fontFamily: {
-      sans: ['nimbus-sans-extended', 'neue-haas-grotesk-text', 'sans-serif'],
+      sans: ["nimbus-sans-extended", "neue-haas-grotesk-text", "sans-serif"],
     },
-    
+
     extend: {},
   },
   plugins: [],
-}
-
+};

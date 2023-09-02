@@ -1,73 +1,138 @@
 <script setup>
 // import simpleParallax from 'simple-parallax-js';
-import { onMounted, ref } from 'vue';
-import sloganSVG from './components/sloganSVG.vue';
+import { onMounted, ref, watch } from "vue";
+import logoSVG from "@/components/logoSVG.vue";
 
+import NavBtn from "@/components/NavBtn.vue";
+
+import FavBtn from "@/components/FavBtn.vue";
+import MenuBtn from "@/components/MenuBtn.vue";
+import DarkLightMode from "@/components/DarkLightMode.vue";
+import LoadingIcon from "@/components/LoadingIcon.vue";
+
+const DISPLAY_MODE = ref("dark");
 let top = 0;
 let isMobile = window.innerWidth < 768 ? true : false;
+const menuOpen = ref(false);
 
-onMounted(()=>{
-
-    if( !isMobile){
-        window.addEventListener('scroll', (e)=>{
-            let mtnImg = document.getElementById('mtn-image');
-            let sloganImgSwap = document.getElementById('slogan-image-swap');
-            top = mtnImg.getBoundingClientRect().top;
-    
-            let opacity = (100/top);
-            console.log(top, opacity )
-// measure difference between top of screen and main container
-            if(top < 250){
-                sloganImgSwap.style.opacity = opacity;
-
-                
-            }else{
-                sloganImgSwap.style.opacity = '0';
-                mtnImg.style.mixBlendMode = 'difference';
-            }
-
-        })
-
+function applyTheme() {
+  if (typeof window !== "undefined") {
+    if (DISPLAY_MODE.value === "dark") {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
     }
-})
+  }
+}
+const toggleTheme = () => {
+  if (DISPLAY_MODE.value === "dark") {
+    DISPLAY_MODE.value = "light";
+  } else {
+    DISPLAY_MODE.value = "dark";
+  }
+  applyTheme();
+};
+
+const toggleMenu = () => {
+  menuOpen.value = !menuOpen.value;
+};
+
+onMounted(() => {
+  window.matchMedia("(prefers-color-scheme: dark)").matches
+    ? (DISPLAY_MODE.value = "dark")
+    : (DISPLAY_MODE.value = "light");
+  applyTheme();
+});
 </script>
 
 <template>
-    
-    <div class="header-wrap | grid-cols-8 justify-self-center w-full max-w-screen-xl fixed z-50 bg-black">
+  <div class="main-wrapper w-full max-w-screen-xl dark:text-white text-black">
+    <div
+      class="header-wrap | justify-self-center | border-b-2 border-black dark:border-white"
+    >
+      <header class="grid grid-cols-12 | w-full h-full |text-slate-900">
+        <logoSVG
+          alt="logo"
+          class="xl:col-span-6 col-span-4 self-center fill-black max-w-full dark:fill-white | h-16"
+        />
+        <div
+          class="list-none xl:col-span-6 col-span-8 flex justify-end text-center font-nimbus font-black uppercase text-4xl self-center w-full"
+        >
+          <LoadingIcon class="self-center mx-2" />
+          <FavBtn class="self-center mx-2" />
 
-        <header class="grid grid-cols-8 bg-black text-white py-8 border-b-2 border-white">
-            
-            <img src="logo.svg" alt="logo" class="col-span-4 self-center" />
-            <ul class="list-none  col-span-4  grid grid-cols-3 text-center font-nimbus font-black uppercase text-4xl self-center">
-                <li><a href="#">About</a></li>
-                <li><a href="#">Work</a></li>
-                <li><a href="#">Hire Us</a></li>
-            </ul>          
-    
-        </header>
+          <DarkLightMode
+            class="self-center mx-2"
+            :display-mode="DISPLAY_MODE"
+            @click="toggleTheme"
+          />
+          <MenuBtn class="self-center mx-2 xl:hidden" @click="toggleMenu" />
+          <NavBtn link="#" class="hidden xl:flex"> Hire Us </NavBtn>
+        </div>
+      </header>
     </div>
 
-    <div class="subheader-wrap | grid-cols-8 justify-self-center max-w-screen-xl fixed z-40">
-        <header class="grid grid-cols-8 bg-black ">
-            <img src="header-shape.svg" class="header-symbol | flex col-span-1 items-center self-stretch p-4 bg-black border-r-4 border-b-2 border-y-white" />
-            <div class="subheading-wrap | col-span-7 border-b-2 border-y-white py-12 pl-8 flex justify-end">
-             <sloganSVG id="slogan-image" class="fill-white stroke-none"/>
-            </div>
-        </header>
-    </div>
-    <!-- mountains -->
-    <div id="mtn-vector" class="col-span-3 xl:pr-0  z-30 overflow-hidden bg-black">
-        <img  src="mtn-vector.webp"  />
-    </div>
-    <div id="mtn-image" class='col-span-5 xl:pl-4  z-40' style="" >
+    <main class="grid grid-cols-12 gap-x-0 | h-full | relative">
+      <aside
+        id="navMenu"
+        class="xl:col-span-2 xl:border-r-2 bg-white dark:bg-black border-black dark:border-white transition-all duration-150"
+        :class="
+          isMobile
+            ? ' ' + isMobile && menuOpen
+              ? 'absolute block w-64 h-full left-0 top:0 border-r-2'
+              : 'absolute opacity-0 -left-64'
+            : ''
+        "
+      >
+        <div
+          class="list-none text-start text-xl | font-nimbus font-black uppercase self-center | h-full | flex flex-col items-around"
+        >
+          <NavBtn class="" animate link="#"> About </NavBtn>
+          <NavBtn class="" animate link="#"> Work </NavBtn>
+          <NavBtn class="" animate link="#"> Hire Us </NavBtn>
+        </div>
+      </aside>
+
+      <div
+        id="mtn-image"
+        class="xl:col-span-4 xl:border-r-2 border-black dark:border-white"
+        style=""
+      >
         <!-- <div class="sticky-block w-full"></div> -->
-        <sloganSVG id="slogan-image-swap" class="stroke-none fill-none"/>
-        <img src="mtn-image.webp"/>
-     </div>
 
+        <img src="mtn-image.webp" class="h-full w-auto" />
+      </div>
+
+      <article class="xl:col-span-6 | flex items-center | h-full px-32">
+        <h2 class="text-2xl">A CREATIVE AGENCY</h2>
+        <div class="grid grid-cols-12">
+          <div class="col-span-4 h-full bg-red-700"></div>
+        </div>
+      </article>
+    </main>
+    <footer
+      class="bg-black | w-full px-4 pt-4 pb-2 | flex items-center justify-center | border-2 border-transparent dark:border-white"
+    >
+      <img src="/t2-logo-full.svg" />
+    </footer>
+  </div>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
+.main-wrapper {
+  margin: 0 auto;
+  height: 800px;
+  max-height: 100vh;
+}
+.header-wrap {
+  height: var(--header-wrap-height);
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
 
+#mtn-image {
+  & img {
+  }
+}
 </style>
